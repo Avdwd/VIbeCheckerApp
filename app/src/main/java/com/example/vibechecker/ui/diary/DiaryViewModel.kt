@@ -16,7 +16,7 @@ class DiaryViewModel @Inject constructor(
     private val repository: MoodRepository
 ) : ViewModel() {
 
-    // Живий список записів. Як тільки щось змінюється в БД, цей список оновлюється.
+    // список записів тільки щось змінюється в бд список оновлюється.
     val moodEntries: StateFlow<List<MoodEntity>> = repository.allMoods
         .stateIn(
             scope = viewModelScope,
@@ -24,7 +24,7 @@ class DiaryViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    // Функція видалення
+    // видалення
     fun deleteEntry(entry: MoodEntity) {
         viewModelScope.launch {
             repository.deleteMood(entry)

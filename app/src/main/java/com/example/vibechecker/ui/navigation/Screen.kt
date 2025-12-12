@@ -18,8 +18,13 @@ sealed class Screen(
     data object Diary : Screen("diary_screen", "Щоденник", R.drawable.ic_nav_diary)
     data object Profile : Screen("profile_screen", "ШІ", R.drawable.ic_nav_profile)
 
-    data object AddEntry : Screen("add_entry_screen")
-    // Екран деталей приймає ID запису (наприклад "detail_screen/1")
+
+    data object AddEntry : Screen("add_entry_screen?mood={mood}") {
+        fun createRoute(mood: Int? = null): String {
+            return if (mood != null) "add_entry_screen?mood=$mood" else "add_entry_screen"
+        }
+    }
+
     data object EntryDetail : Screen("entry_detail_screen/{entryId}") {
         fun createRoute(entryId: Int) = "entry_detail_screen/$entryId"
     }

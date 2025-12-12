@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MoodDao {
 
-    // Зберегти запис (якщо такий ID вже є - замінити його)
+    // Зберегти запис
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMood(mood: MoodEntity)
 
@@ -20,11 +20,11 @@ interface MoodDao {
     suspend fun deleteMood(mood: MoodEntity)
 
     // Отримати ВСІ записи (від нових до старих)
-    // Flow означає "живий потік": якщо щось зміниться в БД, список оновиться сам
+    // Flow означає живий потік
     @Query("SELECT * FROM mood_table ORDER BY timestamp DESC")
     fun getAllMoods(): Flow<List<MoodEntity>>
 
-    // Отримати останні 7 записів (для графіку)
+    // Отримати останні 7 записів для графіку
     @Query("SELECT * FROM mood_table ORDER BY timestamp ASC LIMIT 7")
     fun getLast7Moods(): Flow<List<MoodEntity>>
 

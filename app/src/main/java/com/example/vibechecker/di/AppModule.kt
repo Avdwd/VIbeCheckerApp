@@ -6,30 +6,32 @@ import com.example.vibechecker.data.local.VibeDatabase
 
 import com.example.vibechecker.data.local.dao.MoodDao
 import com.example.vibechecker.data.local.dao.UserDao
+import com.google.ai.client.generativeai.GenerativeModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import com.google.firebase.auth.FirebaseAuth
+import com.example.vibechecker.BuildConfig
 
 @Module
-@InstallIn(SingletonComponent::class) // Цей модуль живе весь час роботи програми
+@InstallIn(SingletonComponent::class) // модуль живе весь час роботи програми
 object AppModule {
 
-    // 1. Створюємо файл бази даних
+    //Створюємо файл бази даних
     @Provides
     @Singleton
     fun provideVibeDatabase(app: Application): VibeDatabase {
         return Room.databaseBuilder(
             app,
             VibeDatabase::class.java,
-            "vibe_checker_db" // Ім'я файлу на телефоні
+            "vibe_checker_db"
         ).fallbackToDestructiveMigration() // Дозволяє перестворити БД при зміні версії
             .build()
     }
 
-    // 2. Створюємо DAO (щоб Hilt міг його видавати іншим класам)
+    //Створюємо DAO щоб Hilt міг його видавати іншим класам
     @Provides
     @Singleton
     fun provideMoodDao(db: VibeDatabase): MoodDao {
@@ -47,5 +49,14 @@ object AppModule {
     @Singleton
     fun provideUserDao(db: VibeDatabase): UserDao {
         return db.userDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGenerativeModel(): GenerativeModel {
+        return GenerativeModel(
+            modelName = "gemini-2.5-flash",
+            apiKey = BuildConfig.GEMINI_API_KEY
+        )
     }
 }

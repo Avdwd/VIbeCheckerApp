@@ -55,7 +55,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             val result = authRepository.deleteAccount()
             if (result.isSuccess) {
-                // Якщо видалили з хмари -> чистимо телефон
+                // видалили з хмари + чистимо телефон
                 launch(Dispatchers.IO) {
                     database.clearAllTables()
                 }

@@ -50,21 +50,21 @@ class RegisterViewModel @Inject constructor(
             _isLoading.value = true
             _error.value = null
 
-            // 1. Реєструємо в Firebase з іменем
+            //Реєструємо в Firebase з іменем
             val result = repository.register(email, pass, name)
 
             if (result.isSuccess) {
-                // 2. УСПІХ! Зберігаємо ім'я в локальну базу Room
+                // ім'я в локальну базу Room
                 val newUser = UserEntity(
-                    id = 1, // Завжди 1 для поточного юзера
+                    id = 1, // не забувай 1 для поточного юзера
                     name = name,
-                    // Інші поля поки пусті
+
                 )
                 userDao.insertUser(newUser)
 
                 _registerSuccess.value = true
             } else {
-                // ... обробка помилок ...
+                //тут треба дописати обробку помилок
             }
             _isLoading.value = false
         }

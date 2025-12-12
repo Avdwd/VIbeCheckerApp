@@ -15,18 +15,17 @@ class AuthRepository @Inject constructor(
     // Оновлений метод реєстрації: тепер приймає name
     suspend fun register(email: String, pass: String, name: String): Result<FirebaseUser?> {
         return try {
-            // 1. Створюємо акаунт
+            //Створюємо акаунт
             val result = firebaseAuth.createUserWithEmailAndPassword(email, pass).await()
             val user = result.user
 
-            // 2. Якщо успішно - оновлюємо ім'я профілю в Firebase
+
             if (user != null) {
                 val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(name) // Встановлюємо ім'я
+                    .setDisplayName(name)
                     .build()
 
                 user.updateProfile(profileUpdates).await()
-                // Оновлюємо об'єкт user (щоб він підтягнув нове ім'я)
                 user.reload().await()
             }
 
@@ -49,7 +48,6 @@ class AuthRepository @Inject constructor(
     // Dидалення акаунту
     suspend fun deleteAccount(): Result<Unit> {
         return try {
-            // Видаляємо поточного юзера з Firebase
             firebaseAuth.currentUser?.delete()?.await()
             Result.success(Unit)
         } catch (e: Exception) {

@@ -69,12 +69,12 @@ fun EntryDetailScreen(
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
 
-        // Перевіряємо, чи завантажився запис
+        // Перевіряємо чи завантажився запис
         if (entry != null) {
-            // Зберігаємо entry в локальну змінну, щоб не писати entry!!
+
             val currentEntry = entry!!
 
-            // Вибираємо іконку під настрій
+
             val moodIcon = when(currentEntry.moodValue) {
                 1 -> R.drawable.ic_mood_1
                 2 -> R.drawable.ic_mood_2
@@ -92,7 +92,7 @@ fun EntryDetailScreen(
                     .verticalScroll(rememberScrollState())
             ) {
 
-                // 1. ВЕРХНЯ КАРТКА (Реальні дані)
+                // ВЕРХНЯ КАРТКА
                 Surface(
                     shape = RoundedCornerShape(16.dp),
                     color = MaterialTheme.colorScheme.surface,
@@ -120,7 +120,7 @@ fun EntryDetailScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // 2. ОПИС (Реальний текст)
+                // ОПИС
                 Text(
                     text = "Опис",
                     style = MaterialTheme.typography.titleMedium,
@@ -145,7 +145,7 @@ fun EntryDetailScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // 3. РЕКОМЕНДАЦІЇ (Згенеровані ViewModel)
+                // РЕКОМЕНДАЦІЇ
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_nav_profile),
@@ -168,7 +168,7 @@ fun EntryDetailScreen(
                 ) {
                     Column(modifier = Modifier.padding(24.dp)) {
                         Text(
-                            text = aiRecommendation, // Текст з ViewModel
+                            text = aiRecommendation,
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontStyle = FontStyle.Italic
                             ),
@@ -185,7 +185,7 @@ fun EntryDetailScreen(
                 Spacer(modifier = Modifier.height(40.dp))
             }
         } else {
-            // Якщо запис ще вантажиться або не знайдено
+
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("Завантаження...")
             }

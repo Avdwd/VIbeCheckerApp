@@ -28,6 +28,7 @@ import com.example.vibechecker.ui.profile.ProfileScreen
 fun MainScreen(
     onNavigateToAddEntry: () -> Unit,
     onNavigateToDetail: (Int) -> Unit,
+    onNavigateToAddEntryWithMood: (Int) -> Unit,
     onLogout: () -> Unit
 ) {
     val bottomNavController = rememberNavController()
@@ -92,8 +93,8 @@ fun MainScreen(
             startDestination = Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Home.route) { HomeScreen(onFabClick = onNavigateToAddEntry) }
-            composable(Screen.Diary.route) { DiaryScreen(onItemClick = onNavigateToDetail) }
+            composable(Screen.Home.route) { HomeScreen(onMoodClick = onNavigateToAddEntryWithMood) }
+            composable(Screen.Diary.route) { DiaryScreen(onItemClick = onNavigateToDetail,onFabClick = onNavigateToAddEntry) }
             composable(Screen.Profile.route) { ProfileScreen(onLogout = onLogout) }
         }
     }

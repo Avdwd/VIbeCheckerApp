@@ -47,28 +47,20 @@ import com.example.vibechecker.data.local.dao.UserDao
 
 @Composable
 fun HomeScreen(
-    onFabClick: () -> Unit,
-    viewModel: HomeViewModel = hiltViewModel(),// Підключаємо ViewMode
+
+    onMoodClick: (Int) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 
 ) {
     var currentMood by remember { mutableIntStateOf(3) }
     val userProfile by viewModel.userProfile.collectAsState()
-    // ОТРИМУЄМО РЕАЛЬНІ ДАНІ З БД
+
     val moodHistory by viewModel.moodValues.collectAsState()
     val daysOfWeek by viewModel.dayLabels.collectAsState()
 
 
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onFabClick,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Entry")
-            }
-        },
+
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
 
@@ -81,7 +73,7 @@ fun HomeScreen(
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
-            // --- 1. ВЕРХНЯ ПАНЕЛЬ (Header) ---
+            //ВЕРХНЯ ПАНЕЛЬ
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -134,8 +126,10 @@ fun HomeScreen(
             )
 
             MoodSelector(
-                selectedMood = currentMood,
-                onMoodSelected = { newMood -> currentMood = newMood }
+                selectedMood = 0,
+                onMoodSelected = { mood ->
+                    onMoodClick(mood)
+                }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -162,7 +156,7 @@ fun HomeScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     if (moodHistory.isEmpty()) {
-                        // Якщо записів немає - показуємо текст
+
                         Text(
                             text = "Додайте свій перший запис,\nщоб побачити статистику!",
                             style = MaterialTheme.typography.bodyMedium,
@@ -170,7 +164,7 @@ fun HomeScreen(
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center
                         )
                     } else {
-                        // Якщо є - показуємо графік
+
                         MoodChart(
                             moods = moodHistory,
                             days = daysOfWeek

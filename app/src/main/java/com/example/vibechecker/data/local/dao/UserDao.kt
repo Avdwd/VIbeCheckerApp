@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
-    // Отримати профіль (Flow - щоб оновлювалося автоматично)
+    // Отримати профіль (Flow оновлюється автоматично)
     @Query("SELECT * FROM user_table WHERE id = 1")
     fun getUser(): Flow<UserEntity?>
 

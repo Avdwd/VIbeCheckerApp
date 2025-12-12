@@ -23,6 +23,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -46,8 +47,10 @@ fun AddEntryScreen(
     onBackClick: () -> Unit,
     viewModel: AddEntryViewModel = hiltViewModel() // Автоматично отримуємо ViewModel
 ) {
-    var selectedMood by remember { mutableIntStateOf(3) }
+    val selectedMood by viewModel.selectedMood.collectAsState()
+
     var note by remember { mutableStateOf("") }
+
 
     val currentDate = remember {
         SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
@@ -75,7 +78,7 @@ fun AddEntryScreen(
                 .padding(paddingValues)
                 .padding(24.dp)
         ) {
-            // 1. ВИБІР НАСТРОЮ
+            // ВИБІР НАСТРОЮ
             Surface(
                 shape = RoundedCornerShape(24.dp),
                 color = MaterialTheme.colorScheme.surface,
@@ -84,15 +87,15 @@ fun AddEntryScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     MoodSelector(
-                        selectedMood = selectedMood,
-                        onMoodSelected = { selectedMood = it }
+                        selectedMood = selectedMood, // Передаємо значення з ViewModel
+                        onMoodSelected = { viewModel.updateMood(it) }
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 2. ДАТА
+            //ДАТА
             Text(
                 text = currentDate,
                 style = MaterialTheme.typography.bodyMedium,
@@ -102,7 +105,7 @@ fun AddEntryScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 3. ПОЛЕ ОПИСУ
+            //ПОЛЕ ОПИСУ
             OutlinedTextField(
                 value = note,
                 onValueChange = { note = it },
@@ -122,16 +125,16 @@ fun AddEntryScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 4. КНОПКА ЗБЕРЕГТИ (ПІДКЛЮЧЕНА ДО БД)
+            //КНОПКА ЗБЕРЕГТИ
             VibeButton(
                 text = "ЗБЕРЕГТИ",
                 onClick = {
-                    // Викликаємо функцію saveMood у ViewModel
+
                     viewModel.saveMood(
-                        moodValue = selectedMood,
+                        //moodValue = selectedMood,
                         note = note,
                         onSuccess = {
-                            onBackClick() // Коли збережеться -> повертаємось назад
+                            onBackClick()
                         }
                     )
                 }

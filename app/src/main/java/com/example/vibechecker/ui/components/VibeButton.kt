@@ -19,8 +19,8 @@ fun VibeButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.primary, // Колір з теми (Жовтий або Лавандовий)
-    contentColor: Color = MaterialTheme.colorScheme.onPrimary // Колір тексту
+    containerColor: Color = MaterialTheme.colorScheme.primary,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary
 ) {
     Button(
         onClick = onClick,

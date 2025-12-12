@@ -41,17 +41,31 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.vibechecker.R
 import com.example.vibechecker.ui.diary.DiaryItem
 import kotlinx.coroutines.delay
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiaryScreen(
     onItemClick: (Int) -> Unit,
-    viewModel: DiaryViewModel = hiltViewModel() // Підключаємо ViewModel
+    onFabClick: () -> Unit,
+    viewModel: DiaryViewModel = hiltViewModel() //  ViewModel
 ) {
-    // Отримуємо РЕАЛЬНИЙ список записів з бази даних
+    //  список записів з бази даних
     val entries by viewModel.moodEntries.collectAsState()
 
     Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onFabClick,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add Entry")
+            }
+        },
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
@@ -73,7 +87,7 @@ fun DiaryScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Якщо записів немає, можна показати текст "Пусто"
+            //записів немає
             if (entries.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("Поки що записів немає. Додайте перший!", color = Color.Gray)
@@ -89,7 +103,7 @@ fun DiaryScreen(
                                 viewModel.deleteEntry(entry) // Видаляємо через ViewModel
                             }
                         ) {
-                            // Вибираємо іконку залежно від цифри настрою
+
                             val iconRes = when(entry.moodValue) {
                                 1 -> R.drawable.ic_mood_1
                                 2 -> R.drawable.ic_mood_2
@@ -140,7 +154,7 @@ fun <T> SwipeToDeleteContainer(
         }
     }
 
-    // Анімація зникнення елементу (щоб він не просто зникав, а гарно схлопувався)
+    // анімація зникнення елементу
     AnimatedVisibility(
         visible = !isRemoved,
         exit = shrinkVertically(
@@ -154,7 +168,7 @@ fun <T> SwipeToDeleteContainer(
                 DeleteBackground(swipeDismissState = state)
             },
             content = { content(item) },
-            // Дозволяємо свайп тільки справа наліво (EndToStart)
+            // дозволяємо свайп тільки справа наліво (EndToStart)
             enableDismissFromStartToEnd = false
         )
     }
@@ -166,7 +180,7 @@ fun DeleteBackground(
     swipeDismissState: androidx.compose.material3.SwipeToDismissBoxState
 ) {
     val color = if (swipeDismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart) {
-        Color(0xFFFF5252) // Червоний колір при видаленні
+        Color(0xFFFF5252)
     } else {
         Color.Transparent
     }
@@ -174,11 +188,11 @@ fun DeleteBackground(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = 8.dp) // Такий самий відступ як у DiaryItem
-            .clip(RoundedCornerShape(16.dp)) // Заокруглення як у карточки
+            .padding(vertical = 8.dp)
+            .clip(RoundedCornerShape(16.dp))
             .background(color)
             .padding(16.dp),
-        contentAlignment = Alignment.CenterEnd // Іконка справа
+        contentAlignment = Alignment.CenterEnd
     ) {
         Icon(
             imageVector = Icons.Default.Delete,

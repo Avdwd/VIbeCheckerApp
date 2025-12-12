@@ -68,7 +68,11 @@ fun AppNavGraph(
         composable(Screen.MainContainer.route) {
             MainScreen(
                 onNavigateToAddEntry = {
-                    navController.navigate(Screen.AddEntry.route)
+                    navController.navigate(Screen.AddEntry.createRoute(null))
+                },
+                onNavigateToAddEntryWithMood = { mood ->
+                    // Передаємо вибраний настрій
+                    navController.navigate(Screen.AddEntry.createRoute(mood))
                 },
                 onNavigateToDetail = { entryId ->
                     navController.navigate(Screen.EntryDetail.createRoute(entryId))
@@ -84,13 +88,21 @@ fun AppNavGraph(
             )
         }
 
-        //Екран додавання
-        composable(Screen.AddEntry.route) {
+        composable(
+            route = Screen.AddEntry.route,
+            arguments = listOf(
+                navArgument("mood") {
+                    type = NavType.StringType // Передаємо як рядок для простоти
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
             AddEntryScreen(
-                onBackClick = { navController.popBackStack() },
-
+                onBackClick = { navController.popBackStack() }
             )
         }
+
 
         //Екран деталей
         composable(

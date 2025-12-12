@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(
     userDao: UserDao
 ) : ViewModel() {
 
-    // 1. Отримуємо останні 7 записів
+    //останні 7 записів
     val last7Entries: StateFlow<List<MoodEntity>> = repository.last7Moods
         .stateIn(
             scope = viewModelScope,
@@ -28,9 +28,9 @@ class HomeViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    // 2. Готуємо дані для графіку (список чисел настрою: 1, 5, 3...)
+    //дані для графіку
     val moodValues: StateFlow<List<Int>> = last7Entries
-        .map { entries: List<MoodEntity> -> // Явно вказуємо тип, щоб компілятор не сварився
+        .map { entries: List<MoodEntity> -> // вказуємо тип
             entries.map { it.moodValue }
         }
         .stateIn(
@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    // 3. Готуємо підписи днів (Пн, Вт...) для графіку
+    // підписи днів для графіку
     val dayLabels: StateFlow<List<String>> = last7Entries
         .map { entries: List<MoodEntity> ->
             entries.map { it.getDayOfWeek() }

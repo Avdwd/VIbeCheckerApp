@@ -10,13 +10,13 @@ import javax.inject.Inject
 class MoodRepository @Inject constructor(
     private val moodDao: MoodDao
 ) {
-    // 1. Отримати всі записи (для списку щоденника)
+    //Отримати всі записи для списку щоденника
     val allMoods: Flow<List<MoodEntity>> = moodDao.getAllMoods()
 
-    // 2. Отримати останні 7 записів (для графіка на головній)
+    //Отримати останні 7 записів для графіка на головній
     val last7Moods: Flow<List<MoodEntity>> = moodDao.getLast7Moods()
 
-    // 3. Зберегти запис
+    //Зберегти запис
     suspend fun saveMood(moodValue: Int, note: String) {
         val entry = MoodEntity(
             moodValue = moodValue,
@@ -26,12 +26,12 @@ class MoodRepository @Inject constructor(
         moodDao.insertMood(entry)
     }
 
-    // 4. Видалити запис
+    //Видалити запис
     suspend fun deleteMood(mood: MoodEntity) {
         moodDao.deleteMood(mood)
     }
 
-    // 5. Отримати конкретний запис
+    //Отримати конкретний запис
     suspend fun getMoodById(id: Int): MoodEntity? {
         return moodDao.getMoodById(id)
     }

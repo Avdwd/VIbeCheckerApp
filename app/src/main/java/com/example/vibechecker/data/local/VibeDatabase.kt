@@ -8,12 +8,12 @@ import com.example.vibechecker.data.local.entity.MoodEntity
 import com.example.vibechecker.data.local.entity.UserEntity
 
 @Database(
-    entities = [MoodEntity::class, UserEntity::class], // <--- ДОДАЛИ UserEntity
-    version = 2, // <--- ЗБІЛЬШИЛИ ВЕРСІЮ (важливо!)
+    entities = [MoodEntity::class, UserEntity::class],
+    version = 2,
     exportSchema = false
 )
 abstract class VibeDatabase : RoomDatabase() {
     abstract fun moodDao(): MoodDao
-    abstract fun userDao(): UserDao // <--- ДОДАЛИ
+    abstract fun userDao(): UserDao
 
 }

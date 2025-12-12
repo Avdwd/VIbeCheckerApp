@@ -23,9 +23,9 @@ import com.example.vibechecker.R
 
 @Composable
 fun DiaryItem(
-    moodIcon: Int, // ID ресурсу іконки (R.drawable.ic_mood_5)
-    date: String,  // Текст дати ("12/12/2023")
-    moodNote: String? = null, // Короткий опис (опціонально)
+    moodIcon: Int, // ID ресурсу іконки
+    date: String,  // текст дати
+    moodNote: String? = null, // Опис
     onClick: () -> Unit
 ) {
     Surface(
@@ -44,7 +44,7 @@ fun DiaryItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // Ліва частина: Іконка
+            // Ліва частина
             Icon(
                 painter = painterResource(id = moodIcon),
                 contentDescription = null,
@@ -52,8 +52,7 @@ fun DiaryItem(
                 modifier = Modifier.size(40.dp)
             )
 
-            // Права частина: Дата та (можливо) текст
-            // Якщо хочете додати текст запису, можна змінити Row на Column тут
+
             Text(
                 text = date,
                 style = MaterialTheme.typography.bodyLarge.copy(
